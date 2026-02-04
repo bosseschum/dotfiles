@@ -1,0 +1,7 @@
+[user]
+	name = bosseschum
+	email = accounts@bschum.de
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main

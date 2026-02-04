@@ -1,0 +1,82 @@
+@import "mocha.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+}
+
+window#waybar {
+  background-color: rgba(30, 30, 46, 0);
+  /* Transparent background */
+  color: @text;
+}
+
+/* Common styling for all modules */
+#workspaces,
+#tray,
+#clock,
+#custom-updates,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth {
+  background-color: @base;
+  padding: 0px 15px;
+  border-radius: 15px;
+  border: 1px solid @surface0;
+  margin: 2px 2px;
+}
+
+/* Specific Module Adjustments */
+#workspaces button {
+  padding: 0 5px;
+  color: @surface1;
+}
+
+#workspaces button.active {
+  color: @mauve;
+}
+
+#workspaces button:hover {
+  color: @blue;
+  background: transparent;
+}
+
+#clock {
+  color: @lavender;
+  font-weight: bold;
+}
+
+#custom-updates {
+  color: @green;
+}
+
+#custom-updates.has-update {
+  color: @red;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical {
+  color: @red;
+}
+
+#pulseaudio {
+  color: @sky;
+}
+
+#network {
+  color: @peach;
+}
+
+#bluetooth {
+  color: @blue;
+}
