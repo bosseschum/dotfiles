@@ -1,10 +1,6 @@
 # .zshrc - Fish-inspired zsh configuration
 # ========================================
 #
-# Run Fastfetch
-if [[ -o interactive ]]; then
-    fastfetch
-fi
 
 # History configuration
 HISTFILE=~/.zsh_history
