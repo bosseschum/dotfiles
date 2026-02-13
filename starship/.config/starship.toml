@@ -1,63 +1,115 @@
+# Dracula Plus Starship Prompt
+# Save as ~/.config/starship.toml
+
+# Format: First line with context, second line with prompt character
 format = """
-[╭─ ](surface0)$username$hostname$directory$git_branch$git_status
-[╰─ ](surface0)$character"""
+[╭─](bold purple)\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$python\
+$nodejs\
+$rust\
+$golang\
+$docker_context\
+$cmd_duration
+[╰─](bold purple)$character"""
 
+# Prompt character
 [character]
-success_symbol = "[❯](#cba6f7)"
-error_symbol = "[❯](red)"
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold purple)"
 
-[username]
-style_user = "#cba6f7"
-style_root = "red"
-format = "[$user]($style)[%](surface2)"
-show_always = true
-
-[hostname]
-ssh_only = false
-style = "red"
-format = "[$hostname]($style) "
-
+# Directory
 [directory]
-style = "bold blue"
-format = "[$path]($style) "
+style = "bold cyan"
 truncation_length = 3
+truncate_to_repo = true
+format = "[$path]($style)[$read_only]($read_only_style) "
 
+# Git branch
 [git_branch]
 symbol = " "
-style = "peach"
+style = "bold purple"
 format = "[$symbol$branch]($style) "
 
+# Git status
 [git_status]
-style = "yellow"
-format = "[$all_status$ahead_behind]($style)"
+style = "bold yellow"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = "🏳"
+up_to_date = ""
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
 
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-mauve = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
+# Git state (rebase, merge, etc.)
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+style = "bold yellow"
 
-palette = "catppuccin_mocha"
+# Username
+[username]
+style_user = "bold pink"
+style_root = "bold red"
+format = "[$user]($style)"
+disabled = false
+show_always = true
 
+# Hostname
+[hostname]
+ssh_only = false
+style = "bold green"
+format = "[%$hostname]($style) "
+disabled = false
+
+# Command duration
+[cmd_duration]
+min_time = 500
+style = "bold yellow"
+format = "[took $duration]($style) "
+
+# Python
+[python]
+symbol = " "
+style = "bold yellow"
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+
+# Node.js
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "[$symbol($version )]($style)"
+
+# Rust
+[rust]
+symbol = " "
+style = "bold orange"
+format = "[$symbol($version )]($style)"
+
+# Go
+[golang]
+symbol = " "
+style = "bold cyan"
+format = "[$symbol($version )]($style)"
+
+# Docker
+[docker_context]
+symbol = " "
+style = "bold blue"
+format = "[$symbol$context]($style) "
+only_with_files = true
+
+# Disable modules you don't need
+[package]
+disabled = true

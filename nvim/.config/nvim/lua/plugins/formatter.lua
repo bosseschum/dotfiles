@@ -11,6 +11,7 @@ return {
         typescript = { "prettier" },
         typescriptreact = { "prettier" },
         json = { "prettier" },
+        ruby = { "rubocop" }
       },
 
       format_on_save = {

@@ -199,3 +199,63 @@ wk.add({
   { "<leader>w", group = "window / write" },
 })
 
+-- ===== Toggle terminal split =====
+
+vim.keymap.set('n', '<leader>tt', function()
+  -- Check if there's a terminal buffer open
+  local term_buf = nil
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].buftype == 'terminal' then
+      term_buf = buf
+      break
+    end
+  end
+  
+  if term_buf then
+    -- If terminal exists, find its window or open it
+    local term_win = vim.fn.bufwinid(term_buf)
+    if term_win ~= -1 then
+      -- Terminal is visible, hide it
+      vim.api.nvim_win_close(term_win, false)
+    else
+      -- Terminal exists but hidden, show it
+      vim.cmd('split | buffer ' .. term_buf)
+    end
+  else
+    -- No terminal exists, create one
+    vim.cmd('split | terminal')
+  end
+end, { desc = 'Toggle terminal' })
+
+-- Terminal mode keybinds (easier to exit terminal)
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><C-w>h', { desc = 'Navigate left from terminal' })
+vim.keymap.set('t', '<C-j>', '<C-\\><C-n><C-w>j', { desc = 'Navigate down from terminal' })
+vim.keymap.set('t', '<C-k>', '<C-\\><C-n><C-w>k', { desc = 'Navigate up from terminal' })
+vim.keymap.set('t', '<C-l>', '<C-\\><C-n><C-w>l', { desc = 'Navigate right from terminal' })
+
+
+-- ===== PRY-bybug =====
+
+local function send_to_term(cmd)
+  return function()
+    local term_buf = nil
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.bo[buf].buftype == 'terminal' then
+        term_buf = buf
+        break
+      end
+    end
+    if term_buf then
+      vim.api.nvim_chan_send(vim.bo[term_buf].channel, cmd .. '\n')
+    end
+  end
+end
+
+-- Debugging keybinds (when in pry session)
+vim.keymap.set('n', '<leader>dn', send_to_term('next'), { desc = 'Debug: next' })
+vim.keymap.set('n', '<leader>ds', send_to_term('step'), { desc = 'Debug: step' })
+vim.keymap.set('n', '<leader>dc', send_to_term('continue'), { desc = 'Debug: continue' })
+vim.keymap.set('n', '<leader>df', send_to_term('finish'), { desc = 'Debug: finish' })
+vim.keymap.set('n', '<leader>dw', send_to_term('whereami'), { desc = 'Debug: whereami' })
+

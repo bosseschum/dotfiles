@@ -45,10 +45,15 @@ zstyle ':completion:*:warnings' format '%F{red}-- no matches found --%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:*:-command-:*:*' group-order alias builtins functions commands
 
+# Autostart TMUX
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then 
+  tmux attach-session -t default || tmux new-session -s default 
+fi
+
 # Fish-like syntax highlighting (requires zsh-syntax-highlighting plugin)
 # Install: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source ~/.zsh/zsh-syntax-highlighting/themes/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
 fi
 
 # Fish-like autosuggestions (requires zsh-autosuggestions plugin)
@@ -83,10 +88,11 @@ alias gl='git log --oneline --graph --decorate'
 alias gd='git diff'
 
 # User aliases
+alias update='sudo pacman -Syu'
 alias aur='paru -Ss'
 alias cat='bat'
 alias i='paru -S'
-alias tanim='~/.config/hypr/scripts/toggle-animations.sh'
+alias zsh='nvim .zshrc'
 
 # Fish-like command-not-found handler
 if [[ -f /etc/zsh_command_not_found ]]; then
