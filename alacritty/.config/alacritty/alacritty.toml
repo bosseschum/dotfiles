@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/dracula_plus.toml"
+  "~/.config/alacritty/rose-pine.toml"
 ]
 
 [env]

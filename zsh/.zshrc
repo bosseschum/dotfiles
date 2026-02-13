@@ -50,10 +50,15 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
   tmux attach-session -t default || tmux new-session -s default 
 fi
 
+# Dracula themed syntax-highlighting
+if [[ -f ~/.zsh/dracula/zsh-syntax-highlighting.sh ]]; then
+    source ~/.zsh/dracula/zsh-syntax-highlighting.sh
+fi
+
 # Fish-like syntax highlighting (requires zsh-syntax-highlighting plugin)
 # Install: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 # Fish-like autosuggestions (requires zsh-autosuggestions plugin)
