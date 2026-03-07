@@ -46,13 +46,15 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*:*:-command-:*:*' group-order alias builtins functions commands
 
 # Autostart TMUX
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then 
-  tmux attach-session -t default || tmux new-session -s default 
-fi
-
-# Dracula themed syntax-highlighting
-if [[ -f ~/.zsh/dracula/zsh-syntax-highlighting.sh ]]; then
-    source ~/.zsh/dracula/zsh-syntax-highlighting.sh
+# if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+#   tmux attach-session -t default || tmux new-session -s default
+# fi
+#
+fastfetch
+#
+#Theme for syntax-highlighting
+if [[ -f ~/.zsh/themes/rose-pine.zsh ]]; then
+    source ~/.zsh/themes/rose-pine.zsh
 fi
 
 # Fish-like syntax highlighting (requires zsh-syntax-highlighting plugin)
@@ -108,6 +110,41 @@ fi
 # This allows you to jump to subdirectories without typing full path
 # e.g., "cd project" from anywhere to jump to ~/dev/project
 setopt AUTO_NAME_DIRS
+
+# Vim mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# Vim mode cursor shape: beam in insert, block in normal
+function zle-keymap-select {
+    if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+        echo -ne '\e[1 q'  # Block cursor (normal mode)
+    elif [[ ${KEYMAP} == main ]] || [[ ${KEYMAP} == viins ]] || [[ $1 = 'beam' ]]; then
+        echo -ne '\e[5 q'  # Beam cursor (insert mode)
+    fi
+}
+zle -N zle-keymap-select
+
+# Start with beam cursor on new prompt
+zle-line-init() { echo -ne '\e[5 q' }
+zle -N zle-line-init
+
+# Restore beam cursor after command runs
+preexec() { echo -ne '\e[5 q' }
+
+# Use vim keys in tab completion menu
+zmodload zsh/complist
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# Restore useful emacs-style bindings in insert mode
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^w' backward-kill-word
+bindkey '^u' kill-whole-line
+bindkey '^r' history-incremental-search-backward
 
 # Key bindings (Fish-like behavior)
 bindkey '^[[A' history-beginning-search-backward  # Up arrow
@@ -171,7 +208,7 @@ config() {
         nvim "$1"
     else
         local found=($(find ~/.config/ -name "$1" -type f 2>/dev/null))
-        
+
         if [[ ${#found[@]} -eq 0 ]]; then
             nvim ~/.config/"$1"
         elif [[ ${#found[@]} -eq 1 ]]; then

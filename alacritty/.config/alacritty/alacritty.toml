@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/rose-pine.toml"
+  "~/.config/alacritty/tokyo-night.toml"
 ]
 
 [env]
@@ -11,3 +11,8 @@ bold = { family = "JetBrains Mono", style = "Bold" }
 italic = { family = "JetBrains Mono", style = "Italic" }
 bold_italic = { family = "JetBrains Mono", style = "Bold Italic" }
 
+[window]
+decorations = "None"
+
+[cursor]
+style = "Beam"
